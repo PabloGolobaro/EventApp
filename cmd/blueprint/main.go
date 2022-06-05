@@ -38,22 +38,18 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Opened db")
 	config.Config.DB = db
 	log.Println("Creating router...")
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	log.Println("Created router")
 	log.Println("Creating swagger...")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	log.Println("Created swagger...")
 	log.Println("Creating routes...")
 	v1 := r.Group("/api/v1")
 	{
 		v1.GET("/users/:id", apis.GetUser)
 	}
-	log.Println("Created routes...")
 	log.Println("Starting server...")
 	r.Run(fmt.Sprintf(":%v", config.Config.ServerPort))
 	// load application configurations
