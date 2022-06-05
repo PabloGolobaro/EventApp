@@ -1,1 +1,1 @@
-ConfigVar: "Dummy Value"
+DSN: "test.db"
