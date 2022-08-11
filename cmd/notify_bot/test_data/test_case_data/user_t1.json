@@ -1,0 +1,9 @@
+{
+  "CreatedAt": "0001-01-01T00:00:00Z",
+  "DeletedAt": null,
+  "ID": 1,
+  "UpdatedAt": "0001-01-01T00:00:00Z",
+  "birth_date": "0001-01-01T00:00:00Z",
+  "full_name": "John",
+  "phone_number": "+79782487685"
+}

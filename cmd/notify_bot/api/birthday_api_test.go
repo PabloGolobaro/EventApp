@@ -1,9 +1,10 @@
-package apis
+package api
 
 import (
 	"bytes"
-	"github.com/MartinHeinz/go-project-blueprint/cmd/blueprint/config"
-	"github.com/MartinHeinz/go-project-blueprint/cmd/blueprint/test_data"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/test_data"
+
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/config"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -23,7 +24,6 @@ type apiTestCase struct {
 	responseFilePath string
 }
 
-// Creates new router in testing mode
 func newRouter() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
@@ -40,10 +40,12 @@ func testAPI(router *gin.Engine, method string, urlToServe string, urlToHit stri
 	router.ServeHTTP(res, req)
 	return res
 }
-
-// Used to run suite (list) of test cases. It checks JSON response is same as expected data in test case file.
-// All test expected test case responses are stored in `test_data/test_case_data` folder in format `<suite_name>_t<number>.json`
-func runAPITests(t *testing.T, tests []apiTestCase) {
+func TestAPI(t *testing.T) {
+	path := test_data.GetTestCaseFolder()
+	tests := []apiTestCase{
+		{"t1 - get a User", "GET", "/users/:id", "/users/1", "", GetBirthday, http.StatusOK, path + "/user_t1.json"},
+		{"t2 - get a User not Present", "GET", "/users/:id", "/users/9999", "", GetBirthday, http.StatusNotFound, ""},
+	}
 	for _, test := range tests {
 		router := newRouter()
 		res := testAPI(router, test.method, test.urlToServe, test.urlToHit, test.function, test.body)
@@ -53,4 +55,5 @@ func runAPITests(t *testing.T, tests []apiTestCase) {
 			assert.JSONEq(t, string(response), res.Body.String(), test.tag)
 		}
 	}
+
 }

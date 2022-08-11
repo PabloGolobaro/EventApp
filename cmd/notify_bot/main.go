@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/MartinHeinz/go-project-blueprint/cmd/blueprint/apis"
-	"github.com/MartinHeinz/go-project-blueprint/cmd/blueprint/config"
-	_ "github.com/MartinHeinz/go-project-blueprint/cmd/blueprint/docs"
-	"github.com/gin-gonic/gin"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/api"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/config"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/excel_migrator"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/models"
 	swaggerFiles "github.com/swaggo/files"
-	"github.com/swaggo/gin-swagger"
+
+	"github.com/gin-gonic/gin"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
@@ -15,11 +17,11 @@ import (
 
 // @title Blueprint Swagger API
 // @version 1.0
-// @description Swagger API for Golang Project Blueprint.
+// @description Swagger API for Golang Project Notify_Bot
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name API Support
-// @contact.email martin7.heinz@gmail.com
+// @contact.email yeu344@gmail.com
 
 // @license.name MIT
 // @license.url https://github.com/MartinHeinz/go-project-blueprint/blob/master/LICENSE
@@ -29,6 +31,7 @@ import (
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
+
 func main() {
 	if err := config.LoadConfig("./config"); err != nil {
 		panic(fmt.Errorf("invalid application configuration: %s", err))
@@ -38,7 +41,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	err = db.AutoMigrate(&models.Birthday{})
+	if err != nil {
+		log.Fatal(err)
+	}
 	config.Config.DB = db
+	err = excel_migrator.GetDataFromExcel("Birthdays.xlsx")
+	if err != nil {
+		log.Fatal(err)
+	}
 	log.Println("Creating router...")
 	r := gin.New()
 	r.Use(gin.Logger())
@@ -48,10 +59,9 @@ func main() {
 	log.Println("Creating routes...")
 	v1 := r.Group("/api/v1")
 	{
-		v1.GET("/users/:id", apis.GetUser)
+		v1.GET("/birthdays/:id", api.GetBirthday)
+		v1.GET("/birthdays/all", api.GetAllBirthdays)
 	}
 	log.Println("Starting server...")
 	r.Run(fmt.Sprintf(":%v", config.Config.ServerPort))
-	// load application configurations
-
 }
