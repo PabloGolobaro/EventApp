@@ -35,7 +35,7 @@ TEST_IMAGE ?= martinheinz/golang:1.12-alpine-test
 
 # If you want to build all binaries, see the 'all-build' rule.
 # If you want to build all containers, see the 'all-container' rule.
-all: ../build
+all: build
 
 # For the following OS/ARCH expansions, we transform OS/ARCH into OS_ARCH
 # because make pattern rules don't match with embedded '/' characters.

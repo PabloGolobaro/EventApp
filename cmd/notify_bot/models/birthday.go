@@ -17,5 +17,5 @@ type Birthday struct {
 	FullName    string    `json:"full_name,omitempty"`
 	PhoneNumber string    `json:"phone_number,omitempty"`
 	BirthDate   time.Time `json:"birth_date"`
-	UserID      uint
+	//UserID      uint
 }
