@@ -1,7 +1,6 @@
 package models
 
 import (
-	"gorm.io/gorm"
 	"time"
 )
 
@@ -13,7 +12,7 @@ type User struct {
 	Birthday   []Birthday `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 type Birthday struct {
-	gorm.Model
+	Model
 	FullName    string    `json:"full_name,omitempty"`
 	PhoneNumber string    `json:"phone_number,omitempty"`
 	BirthDate   time.Time `json:"birth_date"`
