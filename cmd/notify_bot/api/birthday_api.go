@@ -30,7 +30,6 @@ func GetBirthday(c *gin.Context) {
 // GetAllBirthdays godoc
 // @Summary Retrieves all birthdays
 // @Produce json
-// @No Params
 // @Success 200 {objects} models.Birthday
 // @Router /birthdays/all [get]
 // @Security ApiKeyAuth

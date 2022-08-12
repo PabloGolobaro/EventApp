@@ -1,20 +1,18 @@
 basePath: /api/v1
 definitions:
-  models.User:
+  models.Birthday:
     properties:
-      addres:
+      birth_date:
         type: string
       created_at:
         type: string
       deleted_at:
         type: string
-      email:
-        type: string
-      first_name:
+      full_name:
         type: string
       id:
         type: integer
-      last_name:
+      phone_number:
         type: string
       updated_at:
         type: string
@@ -31,10 +29,10 @@ info:
   title: Blueprint Swagger API
   version: "1.0"
 paths:
-  /users/{id}:
+  /birthdays/{id}:
     get:
       parameters:
-      - description: User ID
+      - description: Birthday ID
         in: path
         name: id
         required: true
@@ -45,10 +43,22 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/models.Birthday'
       security:
       - ApiKeyAuth: []
-      summary: Retrieves user based on given ID
+      summary: Retrieves birthday based on given ID
+  /birthdays/all:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: objects
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieves all birthdays
 securityDefinitions:
   ApiKeyAuth:
     in: header

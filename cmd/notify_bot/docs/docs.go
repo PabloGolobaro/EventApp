@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/users/{id}": {
+        "/birthdays/all": {
             "get": {
                 "security": [
                     {
@@ -34,11 +34,32 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Retrieves user based on given ID",
+                "summary": "Retrieves all birthdays",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "objects"
+                        }
+                    }
+                }
+            }
+        },
+        "/birthdays/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Retrieves birthday based on given ID",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "User ID",
+                        "description": "Birthday ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -48,7 +69,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.Birthday"
                         }
                     }
                 }
@@ -56,10 +77,10 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.User": {
+        "models.Birthday": {
             "type": "object",
             "properties": {
-                "addres": {
+                "birth_date": {
                     "type": "string"
                 },
                 "created_at": {
@@ -68,16 +89,13 @@ const docTemplate = `{
                 "deleted_at": {
                     "type": "string"
                 },
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
+                "full_name": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "last_name": {
+                "phone_number": {
                     "type": "string"
                 },
                 "updated_at": {
