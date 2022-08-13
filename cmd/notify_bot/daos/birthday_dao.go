@@ -13,6 +13,30 @@ type BirthdayDAO struct {
 func NewBirthdayDAO() *BirthdayDAO {
 	return &BirthdayDAO{}
 }
+
+func (dao BirthdayDAO) Update(id uint, birthday models.Birthday) error {
+	var birth models.Birthday
+	db := config.Config.DB.First(&birth, id)
+	if db.Error != nil {
+		return db.Error
+	}
+	birth.FullName = birthday.FullName
+	birth.PhoneNumber = birthday.PhoneNumber
+	birth.BirthDate = birthday.BirthDate
+	config.Config.DB.Save(&birth)
+	return nil
+}
+
+func (dao BirthdayDAO) Delete(id uint) error {
+	var birth models.Birthday
+	db := config.Config.DB.First(&birth, id)
+	if db.Error != nil {
+		return db.Error
+	}
+	config.Config.DB.Delete(&birth)
+	return nil
+}
+
 func (dao BirthdayDAO) Create(birthday models.Birthday) error {
 	result := config.Config.DB.Create(&birthday)
 	if result.Error != nil {

@@ -14,4 +14,4 @@ COPY --from=build /src/Birthdays.xlsx .
 
 EXPOSE 8080
 
-CMD ["/notifier"]
+CMD ["/notifier "]
