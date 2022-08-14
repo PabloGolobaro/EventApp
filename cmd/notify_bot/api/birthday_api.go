@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/core"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/daos"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/models"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/services"
@@ -100,5 +101,23 @@ func DeleteBirthday(c *gin.Context) {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 	} else {
 		c.JSON(http.StatusOK, "Success")
+	}
+}
+func TodaysBirthdays(c *gin.Context) {
+	s := services.NewBirthdayService(daos.NewBirthdayDAO())
+	if birthdays, err := s.GetAll(); err != nil {
+		_ = c.AbortWithError(http.StatusInternalServerError, err)
+	} else {
+		todayBirthdays := core.CheckTodayBirthdays(birthdays)
+		c.JSON(http.StatusOK, todayBirthdays)
+	}
+}
+func TommorowBirthdays(c *gin.Context) {
+	s := services.NewBirthdayService(daos.NewBirthdayDAO())
+	if birthdays, err := s.GetAll(); err != nil {
+		_ = c.AbortWithError(http.StatusInternalServerError, err)
+	} else {
+		tomorrowBirthdays := core.CheckTomorrowBirthdays(birthdays)
+		c.JSON(http.StatusOK, tomorrowBirthdays)
 	}
 }

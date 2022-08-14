@@ -20,7 +20,7 @@ func Init(db_type string) *gorm.DB {
 		if err != nil {
 			log.Fatalln(err)
 		}
-
+		db.Where("1=1").Delete(&models.Birthday{})
 		return db
 	} else if db_type == "sqlite" {
 		db, err := gorm.Open(sqlite.Open(config.Config.DSN), &gorm.Config{})
@@ -31,7 +31,7 @@ func Init(db_type string) *gorm.DB {
 		if err != nil {
 			log.Fatalln(err)
 		}
-
+		db.Delete(&models.Birthday{}).Where("1=1")
 		return db
 	} else {
 		log.Fatal("Error: wrong type of DB")

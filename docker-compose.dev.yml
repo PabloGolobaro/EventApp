@@ -1,6 +1,5 @@
-version: '3.8'
+version: "3.8"
 
-#для подключения к БД в поле HOST .env файла должно быть указано db
 services:
   db:
     image: sameersbn/postgresql:10-2
@@ -10,28 +9,22 @@ services:
     restart: always
     ports:
       - 5432:5432
-    networks:
-      - tg_bot
     volumes:
       - ./postgres:/var/lib/postgresql
-
-  bot:
-    container_name: notifier
+  app:
+    container_name: notifier-dev
+    image: notifier-dev
     environment:
       NOTIFY_DSN: "host=db user=postgres password=pacan334 dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Shanghai"
       NOTIFY_SERVER_PORT: 8080
       NOTIFY_API_KEY: golobar
-    stop_signal: SIGINT
+    restart: always
     build:
       context: .
-      target: production
-    restart: always
+      target: development
+    volumes:
+      - .:/app
     ports:
       - 8080:8080
-    networks:
-      - tg_bot
     depends_on:
       - db
-networks:
-  tg_bot:
-    driver: bridge

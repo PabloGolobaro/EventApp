@@ -23,6 +23,8 @@ func NewGinRouter() *gin.Engine {
 		v1.POST("/birthdays/add", api.PostBirthday)
 		v1.DELETE("/birthdays/:id", api.DeleteBirthday)
 		v1.GET("/birthdays/all", api.GetAllBirthdays)
+		v1.GET("/birthdays/today", api.TodaysBirthdays)
+		v1.GET("/birthdays/tomorrow", api.TommorowBirthdays)
 	}
 	return r
 }

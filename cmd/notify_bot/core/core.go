@@ -8,7 +8,7 @@ import (
 func CheckTodayBirthdays(birthdays []models.Birthday) (result []models.Birthday) {
 	result = make([]models.Birthday, 0)
 	for _, birthday := range birthdays {
-		if birthday.BirthDate.Day() == time.Now().Day() {
+		if birthday.BirthDate.Day() == time.Now().Day() && birthday.BirthDate.Month() == time.Now().Month() {
 			result = append(result, birthday)
 		}
 	}
@@ -17,8 +17,9 @@ func CheckTodayBirthdays(birthdays []models.Birthday) (result []models.Birthday)
 
 func CheckTomorrowBirthdays(birthdays []models.Birthday) (result []models.Birthday) {
 	result = make([]models.Birthday, 0)
+	tomorrow := time.Now().Add(time.Hour * 24)
 	for _, birthday := range birthdays {
-		if birthday.BirthDate.Day() == time.Now().Add(time.Hour*24).Day() {
+		if birthday.BirthDate.Day() == tomorrow.Day() && birthday.BirthDate.Month() == tomorrow.Month() {
 			result = append(result, birthday)
 		}
 	}
