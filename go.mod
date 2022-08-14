@@ -3,6 +3,7 @@ module github.com/PabloGolobaro/go-notify-project
 go 1.12
 
 require (
+	github.com/gin-contrib/sessions v0.0.5 // indirect
 	github.com/gin-gonic/gin v1.8.0
 	github.com/jackc/pgx/v4 v4.17.0 // indirect
 	github.com/spf13/viper v1.4.0

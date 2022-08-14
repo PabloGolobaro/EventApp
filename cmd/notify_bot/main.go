@@ -6,8 +6,8 @@ import (
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/db"
 	_ "github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/docs"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/excel_migrator"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/httputil"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/services"
 	"log"
 )
 
@@ -36,7 +36,7 @@ func main() {
 	log.Println("Opening db...")
 	config.Config.DB = db.Init(*db_type)
 	log.Println("Get Excel data...")
-	err := excel_migrator.GetDataFromExcel("Birthdays.xlsx")
+	err := services.GetDataFromExcel("Birthdays.xlsx")
 	if err != nil {
 		log.Fatal(err)
 	}
