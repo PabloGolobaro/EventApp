@@ -1,10 +1,10 @@
 package api
 
 import (
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/core"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/daos"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/models"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/services"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/core"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/services"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -33,7 +33,7 @@ func GetBirthday(c *gin.Context) {
 // @Summary Retrieves all birthdays
 // @Produce json
 // @Success 200 {objects} models.Birthday
-// @Router /birthdays/all [get]
+// @Router /birthdays [get]
 // @Security ApiKeyAuth
 func GetAllBirthdays(c *gin.Context) {
 	s := services.NewBirthdayService(daos.NewBirthdayDAO())
@@ -49,7 +49,7 @@ func GetAllBirthdays(c *gin.Context) {
 // @Produce json
 // @Param birth_struct body models.Birthday true "Birthday structure"
 // @Success 200 {object} models.Birthday
-// @Router /birthdays/add [post]
+// @Router /birthdays [post]
 // @Security ApiKeyAuth
 func PostBirthday(c *gin.Context) {
 	s := services.NewBirthdayService(daos.NewBirthdayDAO())
@@ -57,7 +57,7 @@ func PostBirthday(c *gin.Context) {
 	if err := c.BindJSON(&birthday); err != nil {
 		return
 	}
-	if err := s.Put(birthday); err != nil {
+	if err := s.Post(birthday); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 	} else {
 		c.JSON(http.StatusOK, birthday)

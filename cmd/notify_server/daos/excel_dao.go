@@ -2,7 +2,7 @@ package daos
 
 import (
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/models"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"github.com/tealeg/xlsx"
 )
 
@@ -27,6 +27,10 @@ func (e *ExcelFileDAO) GetFromFile() (int, error) {
 		fmt.Println(err.Error())
 		return rows, err
 	}
+	readByUsername, err := NewUserDAO().ReadByUsername("Golobar")
+	if err != nil {
+		return 0, err
+	}
 	// Перемещаем страницу листа, чтобы прочитать
 	for _, sheet := range xlFile.Sheets {
 		fmt.Println("sheet name: ", sheet.Name)
@@ -49,6 +53,9 @@ func (e *ExcelFileDAO) GetFromFile() (int, error) {
 					birthday.PhoneNumber = cell.String()
 				}
 			}
+			//FOR TESTING
+			birthday.UserID = readByUsername.ID
+			//FOR TESTING
 			e.data = append(e.data, birthday)
 		}
 	}

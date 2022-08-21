@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/daos"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/models"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"log"
 )
 
@@ -70,7 +70,7 @@ func (s *BirthdayService) Update(id uint, birth models.Birthday) error {
 	}
 	return nil
 }
-func (s *BirthdayService) Put(birth models.Birthday) error {
+func (s *BirthdayService) Post(birth models.Birthday) error {
 	err := s.birth_dao.Create(birth)
 	if err != nil {
 		return err

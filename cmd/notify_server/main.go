@@ -3,11 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/config"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/db"
-	_ "github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/docs"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/httputil"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/services"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/db"
+	_ "github.com/PabloGolobaro/go-notify-project/cmd/notify_server/docs"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil"
 	"log"
 )
 
@@ -36,10 +35,10 @@ func main() {
 	log.Println("Opening db...")
 	config.Config.DB = db.Init(*db_type)
 	log.Println("Get Excel data...")
-	err := services.GetDataFromExcel("Birthdays.xlsx")
-	if err != nil {
-		log.Fatal(err)
-	}
+	//err := services.GetDataFromExcel("Birthdays.xlsx")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 	log.Println("Creating router...")
 	r := httputil.NewGinRouter()
 	log.Println("Starting server...")

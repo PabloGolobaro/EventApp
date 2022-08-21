@@ -3,8 +3,8 @@ package middlewares
 import (
 	"errors"
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/config"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/httputil/helpers"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil/helpers"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

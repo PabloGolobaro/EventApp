@@ -4,7 +4,7 @@ COPY . /src
 
 WORKDIR /src
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o notifier ./cmd/notify_bot
+RUN CGO_ENABLED=0 GOOS=linux go build -o notifier ./cmd/notify_server
 
 FROM gcr.io/distroless/static-debian11
 

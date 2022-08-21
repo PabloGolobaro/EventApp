@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/models"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"time"
 )
 

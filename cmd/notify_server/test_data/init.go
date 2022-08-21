@@ -2,8 +2,8 @@ package test_data
 
 import (
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/config"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/models"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"io/ioutil"
@@ -36,11 +36,11 @@ func ResetDB() *gorm.DB {
 }
 
 func getSQLFile() string {
-	return "C:\\Users\\Professional\\GolandProjects\\go-notify-project\\cmd\\notify_bot\\test_data\\db.sql" // on host use absolute path
+	return "C:\\Users\\Professional\\GolandProjects\\go-notify-project\\cmd\\notify_server\\test_data\\db.sql" // on host use absolute path
 }
 
 func GetTestCaseFolder() string {
-	return "C:\\Users\\Professional\\GolandProjects\\go-notify-project\\cmd\\notify_bot\\test_data\\test_case_data" // on host use absolute path
+	return "C:\\Users\\Professional\\GolandProjects\\go-notify-project\\cmd\\notify_server\\test_data\\test_case_data" // on host use absolute path
 }
 
 // Executes SQL file specified by file argument

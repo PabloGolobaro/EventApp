@@ -2,8 +2,8 @@ package daos
 
 import (
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/config"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/models"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"gorm.io/gorm"
 )
 

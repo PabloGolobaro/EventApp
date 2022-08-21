@@ -2,9 +2,9 @@ package api
 
 import (
 	"bytes"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/test_data"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/test_data"
 
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/config"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"

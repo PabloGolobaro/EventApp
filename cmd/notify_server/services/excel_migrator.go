@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/daos"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
 )
 
 func GetDataFromExcel(filename string) error {

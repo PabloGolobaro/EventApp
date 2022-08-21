@@ -1,8 +1,10 @@
 package controllers
 
 import (
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/httputil/globals"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/httputil/helpers"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil/globals"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil/helpers"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/services"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -36,7 +38,7 @@ func LoginPostHandler() gin.HandlerFunc {
 			c.HTML(http.StatusBadRequest, "login.html", gin.H{"content": "Please logout first"})
 			return
 		}
-
+		//username --> telegram_id
 		username := c.PostForm("username")
 		password := c.PostForm("password")
 
@@ -94,9 +96,19 @@ func DashboardGetHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		user := session.Get(globals.Userkey)
+		user_struct, err := daos.NewUserDAO().ReadByUsername(user.(string))
+		if err != nil {
+			return
+		}
+		birthdays, err := services.NewUserService(daos.NewUserDAO()).GetAllUserBirthdays(user_struct.ID)
+		if err != nil {
+			return
+		}
+		birthdays = helpers.Sort_birthdays(birthdays)
 		c.HTML(http.StatusOK, "dashboard.html", gin.H{
-			"content": "This is a dashboard",
-			"user":    user,
+			"content":   "This is a dashboard",
+			"user":      user,
+			"birthdays": birthdays,
 		})
 	}
 }

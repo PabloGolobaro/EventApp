@@ -2,9 +2,9 @@ package services
 
 import (
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/config"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/daos"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_bot/models"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
@@ -12,15 +12,18 @@ import (
 )
 
 func TestBirthdayService(t *testing.T) {
+	//dsn := "host=db user=postgres password=pacan334 dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Shanghai"
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
 	db.AutoMigrate(&models.Birthday{})
+	db.AutoMigrate(&models.User{})
 	db.Where("1 = 1").Delete(&models.Birthday{})
+	db.Where("1 = 1").Delete(&models.User{})
 	config.Config.DB = db
-	birthdayService := NewBirthdayService(daos.NewBirthdayDAO(), daos.NewExcelFileDAO("Birthdays.xlsx"))
-	err = birthdayService.Excel_to_db()
+	birthdayService := NewBirthdayService(daos.NewBirthdayDAO())
+	err = birthdayService.Excel_to_db("Birthdays.xlsx")
 	if err != nil {
 		log.Fatal(err)
 	}

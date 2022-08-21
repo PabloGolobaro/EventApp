@@ -7,7 +7,13 @@
 
         <div class="columns">
             <div class="column is-one-third">{{template "menu.html" .}}</div>
-            <div class="column is-two-thirds"><p  style="background-color: whitesmoke; padding: 10px;">{{.content}}</p></div>
+            <div class="column is-two-thirds"><p style="background-color: whitesmoke; padding: 10px;">{{.content}}</p>
+                {{range .birthdays}}
+                    <p style="background-color: whitesmoke; padding: 10px;">{{ .FullName}}
+                        <b>{{ .BirthDate | short}}</b>
+                        {{if .PhoneNumber}} {{ .PhoneNumber}} {{else}} Номер не указан{{end}}</p>
+                {{end}}
+            </div>
         </div>
     </div>
 </section>
