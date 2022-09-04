@@ -34,11 +34,6 @@ func main() {
 	flag.Parse()
 	log.Println("Opening db...")
 	config.Config.DB = db.Init(*db_type)
-	log.Println("Get Excel data...")
-	//err := services.GetDataFromExcel("Birthdays.xlsx")
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
 	log.Println("Creating router...")
 	r := httputil.NewGinRouter()
 	log.Println("Starting server...")

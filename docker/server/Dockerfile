@@ -5,10 +5,7 @@ RUN go mod download
 COPY . .
 RUN go get github.com/codegangsta/gin
 RUN go install github.com/codegangsta/gin
-
-#RUN go install github.com/cespare/reflex@latest
 EXPOSE 8080
-#CMD reflex -g '*.go' go run ./cmd/notify_server/main.go --start-service
 
 CMD gin -i --appPort 8080 --port 3000 --bin notify_server --path ./cmd/notify_server run ./cmd/notify_server/main.go
 
@@ -24,7 +21,7 @@ FROM gcr.io/distroless/static-debian11 AS production
 
 COPY --from=build /src/notify_server .
 
-COPY --from=build /src/Birthdays.xlsx .
+COPY --from=build /src/static ./static
 
 EXPOSE 8080
 

@@ -35,16 +35,16 @@ type BirthdaysCache struct {
 	sync.RWMutex
 }
 
-func LoadConfig(configPaths ...string) error {
+func LoadConfig() error {
 	log.Println("Loading config...")
 	v := viper.New()
 	v.SetConfigName("bot_config")
 	v.SetConfigType("yaml")
 	v.AddConfigPath("./config")
 
-	for _, path := range configPaths {
-		v.AddConfigPath(path)
-	}
+	//for _, path := range configPaths {
+	//	v.AddConfigPath(path)
+	//}
 	if err := v.ReadInConfig(); err != nil {
 		return fmt.Errorf("failed to read the configuration file: %s", err)
 	}
