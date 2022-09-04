@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil/globals"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil/helpers"
@@ -96,11 +97,11 @@ func DashboardGetHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		user := session.Get(globals.Userkey)
-		user_struct, err := daos.NewUserDAO().ReadByUsername(user.(string))
+		user_struct, err := daos.NewUserDAO(config.Config.DB).ReadByUsername(user.(string))
 		if err != nil {
 			return
 		}
-		birthdays, err := services.NewUserService(daos.NewUserDAO()).GetAllUserBirthdays(user_struct.ID)
+		birthdays, err := services.NewUserService(daos.NewUserDAO(config.Config.DB)).GetAllUserBirthdays(user_struct.ID)
 		if err != nil {
 			return
 		}

@@ -27,12 +27,13 @@ func NewGinRouter() *gin.Engine {
 	r.LoadHTMLGlob("./static/templates/*.html")
 
 	r.Use(sessions.Sessions("session", cookie.NewStore(globals.Secret)))
-	public := r.Group("/")
-	PublicRoutes(public)
 
 	private := r.Group("/")
 	private.Use(middlewares.AuthRequired)
 	PrivateRoutes(private)
+
+	public := r.Group("/")
+	PublicRoutes(public)
 
 	return r
 }

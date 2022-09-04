@@ -16,6 +16,6 @@ type Birthday struct {
 	gorm.Model
 	FullName    string    `json:"full_name,omitempty"`
 	PhoneNumber string    `json:"phone_number,omitempty"`
-	BirthDate   time.Time `json:"birth_date" gorm:"default:-"`
+	BirthDate   time.Time `json:"birth_date"`
 	UserID      uint
 }

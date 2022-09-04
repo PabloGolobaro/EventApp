@@ -26,3 +26,13 @@ func CheckTomorrowBirthdays(birthdays []models.Birthday) (result []models.Birthd
 	return
 
 }
+func CheckMonthBirthdays(birthdays []models.Birthday) (result []models.Birthday) {
+	result = make([]models.Birthday, 0)
+	for _, birthday := range birthdays {
+		if birthday.BirthDate.Month() == time.Now().Month() {
+			result = append(result, birthday)
+		}
+	}
+	return
+
+}

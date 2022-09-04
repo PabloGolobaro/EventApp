@@ -19,7 +19,7 @@ func NewExcelFileDAO(filename string) *ExcelFileDAO {
 	return &ExcelFileDAO{filename: filename}
 }
 
-func (e *ExcelFileDAO) GetFromFile() (int, error) {
+func (e *ExcelFileDAO) GetFromFile(telegram_id uint) (int, error) {
 	// открываем файл
 	var rows int = 0
 	xlFile, err := xlsx.OpenFile(e.filename)
@@ -27,7 +27,6 @@ func (e *ExcelFileDAO) GetFromFile() (int, error) {
 		fmt.Println(err.Error())
 		return rows, err
 	}
-	readByUsername, err := NewUserDAO().ReadByUsername("Golobar")
 	if err != nil {
 		return 0, err
 	}
@@ -54,7 +53,7 @@ func (e *ExcelFileDAO) GetFromFile() (int, error) {
 				}
 			}
 			//FOR TESTING
-			birthday.UserID = readByUsername.ID
+			birthday.UserID = telegram_id
 			//FOR TESTING
 			e.data = append(e.data, birthday)
 		}

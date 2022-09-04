@@ -2,16 +2,16 @@ package daos
 
 import (
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"gorm.io/gorm"
 )
 
 type UserGorm struct {
+	DB *gorm.DB
 }
 
 func (u UserGorm) Create(user models.User) error {
-	result := config.Config.DB.Create(&user)
+	result := u.DB.Create(&user)
 	if result.Error != nil {
 		return result.Error
 	} else if result.RowsAffected == 0 {
@@ -22,7 +22,7 @@ func (u UserGorm) Create(user models.User) error {
 
 func (u UserGorm) Read(id uint) (models.User, error) {
 	var user_struct models.User
-	db := config.Config.DB.First(&user_struct, id)
+	db := u.DB.First(&user_struct, id)
 	if db.Error != nil {
 		return user_struct, db.Error
 	}
@@ -30,7 +30,15 @@ func (u UserGorm) Read(id uint) (models.User, error) {
 }
 func (u UserGorm) ReadByUsername(username string) (models.User, error) {
 	var user_struct models.User
-	db := config.Config.DB.Where("username = ?", username).First(&user_struct)
+	db := u.DB.Where("username = ?", username).First(&user_struct)
+	if db.Error != nil {
+		return user_struct, db.Error
+	}
+	return user_struct, nil
+}
+func (u UserGorm) ReadByTelegramId(telegram_id string) (models.User, error) {
+	var user_struct models.User
+	db := u.DB.Where("telegram_id = ?", telegram_id).First(&user_struct)
 	if db.Error != nil {
 		return user_struct, db.Error
 	}
@@ -39,7 +47,7 @@ func (u UserGorm) ReadByUsername(username string) (models.User, error) {
 
 func (u UserGorm) ReadAll() ([]models.User, error) {
 	var users []models.User
-	db := config.Config.DB.Find(&users)
+	db := u.DB.Find(&users)
 	fmt.Println(db.RowsAffected)
 	if db.Error != nil {
 		return users, db.Error
@@ -62,13 +70,13 @@ func (u UserGorm) GetBirthdays(id uint) ([]models.Birthday, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = config.Config.DB.Order("birth_date").Model(&user).Association("Birthdays").Find(&birthdays)
+	err = u.DB.Order("birth_date").Model(&user).Association("Birthdays").Find(&birthdays)
 	if err != nil {
 		return nil, err
 	}
 	return birthdays, nil
 
 }
-func NewUserDAO() *UserGorm {
-	return &UserGorm{}
+func NewUserDAO(db *gorm.DB) *UserGorm {
+	return &UserGorm{DB: db}
 }

@@ -2,43 +2,43 @@ package daos
 
 import (
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"gorm.io/gorm"
 )
 
 type BirthdayDAO struct {
+	DB *gorm.DB
 }
 
-func NewBirthdayDAO() *BirthdayDAO {
-	return &BirthdayDAO{}
+func NewBirthdayDAO(db *gorm.DB) *BirthdayDAO {
+	return &BirthdayDAO{DB: db}
 }
 
 func (dao BirthdayDAO) Update(id uint, birthday models.Birthday) error {
 	var birth models.Birthday
-	db := config.Config.DB.First(&birth, id)
+	db := dao.DB.First(&birth, id)
 	if db.Error != nil {
 		return db.Error
 	}
 	birth.FullName = birthday.FullName
 	birth.PhoneNumber = birthday.PhoneNumber
 	birth.BirthDate = birthday.BirthDate
-	config.Config.DB.Save(&birth)
+	dao.DB.Save(&birth)
 	return nil
 }
 
 func (dao BirthdayDAO) Delete(id uint) error {
 	var birth models.Birthday
-	db := config.Config.DB.First(&birth, id)
+	db := dao.DB.First(&birth, id)
 	if db.Error != nil {
 		return db.Error
 	}
-	config.Config.DB.Delete(&birth)
+	dao.DB.Delete(&birth)
 	return nil
 }
 
 func (dao BirthdayDAO) Create(birthday models.Birthday) error {
-	result := config.Config.DB.Create(&birthday)
+	result := dao.DB.Create(&birthday)
 	if result.Error != nil {
 		return result.Error
 	} else if result.RowsAffected == 0 {
@@ -48,7 +48,7 @@ func (dao BirthdayDAO) Create(birthday models.Birthday) error {
 }
 func (dao BirthdayDAO) Read(id uint) (models.Birthday, error) {
 	var birth_struct models.Birthday
-	db := config.Config.DB.First(&birth_struct, id)
+	db := dao.DB.First(&birth_struct, id)
 	if db.Error != nil {
 		return birth_struct, db.Error
 	}
@@ -56,7 +56,7 @@ func (dao BirthdayDAO) Read(id uint) (models.Birthday, error) {
 }
 func (dao BirthdayDAO) ReadAll() ([]models.Birthday, error) {
 	var birthdays []models.Birthday
-	db := config.Config.DB.Find(&birthdays)
+	db := dao.DB.Find(&birthdays)
 	fmt.Println(db.RowsAffected)
 	if db.Error != nil {
 		return birthdays, db.Error

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/core"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
@@ -19,7 +20,7 @@ import (
 // @Router /birthdays/{id} [get]
 // @Security ApiKeyAuth
 func GetBirthday(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO())
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
 	if birth, err := s.GetById(uint(id)); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
@@ -36,7 +37,7 @@ func GetBirthday(c *gin.Context) {
 // @Router /birthdays [get]
 // @Security ApiKeyAuth
 func GetAllBirthdays(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO())
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
 	if birthdays, err := s.GetAll(); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 	} else {
@@ -52,7 +53,7 @@ func GetAllBirthdays(c *gin.Context) {
 // @Router /birthdays [post]
 // @Security ApiKeyAuth
 func PostBirthday(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO())
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
 	var birthday models.Birthday
 	if err := c.BindJSON(&birthday); err != nil {
 		return
@@ -73,7 +74,7 @@ func PostBirthday(c *gin.Context) {
 // @Router /birthdays/{id} [put]
 // @Security ApiKeyAuth
 func PutBirthday(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO())
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
 	var birthday models.Birthday
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err := c.BindJSON(&birthday); err != nil {
@@ -95,7 +96,7 @@ func PutBirthday(c *gin.Context) {
 // @Router /birthdays/{id} [delete]
 // @Security ApiKeyAuth
 func DeleteBirthday(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO())
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err := s.Delete(uint(id)); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
@@ -104,7 +105,7 @@ func DeleteBirthday(c *gin.Context) {
 	}
 }
 func TodaysBirthdays(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO())
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
 	if birthdays, err := s.GetAll(); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 	} else {
@@ -113,7 +114,7 @@ func TodaysBirthdays(c *gin.Context) {
 	}
 }
 func TommorowBirthdays(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO())
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
 	if birthdays, err := s.GetAll(); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 	} else {

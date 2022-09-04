@@ -1,8 +1,8 @@
 package db
 
 import (
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
+	"github.com/PabloGolobaro/go-notify-project/cmd/tg_bot/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -20,11 +20,9 @@ func Init(db_type string) *gorm.DB {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		//db.Where("1=1").Delete(&models.Birthday{})
-		//db.Where("1=1").Delete(&models.User{})
 		return db
 	} else if db_type == "sqlite" {
-		db, err := gorm.Open(sqlite.Open(config.Config.DSN), &gorm.Config{})
+		db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 		if err != nil {
 			log.Fatalln(err)
 		}

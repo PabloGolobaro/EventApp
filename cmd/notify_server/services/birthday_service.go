@@ -7,7 +7,7 @@ import (
 )
 
 type ExcelDAO interface {
-	GetFromFile() (int, error)
+	GetFromFile(telegram_id uint) (int, error)
 	GetData() []models.Birthday
 	SetToFile(filename string) error
 }
@@ -27,9 +27,9 @@ type BirthdayService struct {
 func NewBirthdayService(birth_dao Birthday_DAO) *BirthdayService {
 	return &BirthdayService{birth_dao: birth_dao}
 }
-func (s *BirthdayService) Excel_to_db(filename string) error {
+func (s *BirthdayService) Excel_to_db(telegram_id uint, filename string) error {
 	s.excel = daos.NewExcelFileDAO(filename)
-	_, err := s.excel.GetFromFile()
+	_, err := s.excel.GetFromFile(telegram_id)
 	if err != nil {
 		return err
 	}
