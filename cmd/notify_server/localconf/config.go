@@ -1,4 +1,4 @@
-package config
+package localconf
 
 import (
 	"github.com/spf13/viper"

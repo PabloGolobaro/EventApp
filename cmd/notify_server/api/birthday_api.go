@@ -1,9 +1,9 @@
 package api
 
 import (
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/core"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/services"
 	"github.com/gin-gonic/gin"
@@ -13,14 +13,14 @@ import (
 )
 
 // GetBirthday godoc
-// @Summary Retrieves birthday based on given ID
+// @Summary Retrieves birthdays based on given ID
 // @Produce json
 // @Param id path integer true "Birthday ID"
 // @Success 200 {object} models.Birthday
 // @Router /birthdays/{id} [get]
 // @Security ApiKeyAuth
 func GetBirthday(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
 	if birth, err := s.GetById(uint(id)); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
@@ -37,7 +37,7 @@ func GetBirthday(c *gin.Context) {
 // @Router /birthdays [get]
 // @Security ApiKeyAuth
 func GetAllBirthdays(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
 	if birthdays, err := s.GetAll(); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 	} else {
@@ -46,14 +46,14 @@ func GetAllBirthdays(c *gin.Context) {
 }
 
 // PostBirthday godoc
-// @Summary Puts birthday based on given data
+// @Summary Puts birthdays based on given data
 // @Produce json
 // @Param birth_struct body models.Birthday true "Birthday structure"
 // @Success 200 {object} models.Birthday
 // @Router /birthdays [post]
 // @Security ApiKeyAuth
 func PostBirthday(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
 	var birthday models.Birthday
 	if err := c.BindJSON(&birthday); err != nil {
 		return
@@ -66,7 +66,7 @@ func PostBirthday(c *gin.Context) {
 }
 
 // PutBirthday godoc
-// @Summary Updates birthday based on given ID and data
+// @Summary Updates birthdays based on given ID and data
 // @Produce json
 // @Param id path integer true "Birthday ID"
 // @Param birth_struct body models.Birthday true "Birthday structure"
@@ -74,7 +74,7 @@ func PostBirthday(c *gin.Context) {
 // @Router /birthdays/{id} [put]
 // @Security ApiKeyAuth
 func PutBirthday(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
 	var birthday models.Birthday
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err := c.BindJSON(&birthday); err != nil {
@@ -89,14 +89,14 @@ func PutBirthday(c *gin.Context) {
 }
 
 // DeleteBirthday godoc
-// @Summary Deletes birthday based on given ID
+// @Summary Deletes birthdays based on given ID
 // @Produce json
 // @Param id path integer true "Birthday ID"
 // @Success 200
 // @Router /birthdays/{id} [delete]
 // @Security ApiKeyAuth
 func DeleteBirthday(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err := s.Delete(uint(id)); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
@@ -105,7 +105,7 @@ func DeleteBirthday(c *gin.Context) {
 	}
 }
 func TodaysBirthdays(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
 	if birthdays, err := s.GetAll(); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 	} else {
@@ -114,7 +114,7 @@ func TodaysBirthdays(c *gin.Context) {
 	}
 }
 func TommorowBirthdays(c *gin.Context) {
-	s := services.NewBirthdayService(daos.NewBirthdayDAO(config.Config.DB))
+	s := services.NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
 	if birthdays, err := s.GetAll(); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 	} else {

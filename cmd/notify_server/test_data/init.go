@@ -2,7 +2,7 @@ package test_data
 
 import (
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -12,27 +12,27 @@ import (
 
 func init() {
 	// the test may be started from the home directory or a subdirectory
-	err := config.LoadConfig("C:\\Users\\Professional\\GolandProjects\\go-notify-project\\config") // on host use absolute path
+	err := localconf.LoadConfig("C:\\Users\\Professional\\GolandProjects\\go-notify-project\\config") // on host use absolute path
 	if err != nil {
 		panic(err)
 	}
-	config.Config.DB, config.Config.DBErr = gorm.Open(sqlite.Open("tests.db"), &gorm.Config{})
-	config.Config.DB.Exec("PRAGMA foreign_keys = ON") // SQLite defaults to `foreign_keys = off'`
-	if config.Config.DBErr != nil {
-		panic(config.Config.DBErr)
+	localconf.Config.DB, localconf.Config.DBErr = gorm.Open(sqlite.Open("tests.db"), &gorm.Config{})
+	localconf.Config.DB.Exec("PRAGMA foreign_keys = ON") // SQLite defaults to `foreign_keys = off'`
+	if localconf.Config.DBErr != nil {
+		panic(localconf.Config.DBErr)
 	}
 
-	config.Config.DB.AutoMigrate(&models.Birthday{})
+	localconf.Config.DB.AutoMigrate(&models.Birthday{})
 }
 
 // Resets testing database - deletes all tables, creates new ones using GORM migration and populates them using `db.sql` file
 func ResetDB() *gorm.DB {
-	config.Config.DB.Migrator().DropTable(&models.Birthday{}) // Note: Order matters
-	config.Config.DB.AutoMigrate(&models.Birthday{})
-	if err := runSQLFile(config.Config.DB, getSQLFile()); err != nil {
+	localconf.Config.DB.Migrator().DropTable(&models.Birthday{}) // Note: Order matters
+	localconf.Config.DB.AutoMigrate(&models.Birthday{})
+	if err := runSQLFile(localconf.Config.DB, getSQLFile()); err != nil {
 		panic(fmt.Errorf("error while initializing test database: %s", err))
 	}
-	return config.Config.DB
+	return localconf.Config.DB
 }
 
 func getSQLFile() string {

@@ -2,8 +2,8 @@ package services
 
 import (
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -21,12 +21,12 @@ func TestBirthdayService(t *testing.T) {
 	db.AutoMigrate(&models.User{})
 	db.Where("1 = 1").Delete(&models.Birthday{})
 	db.Where("1 = 1").Delete(&models.User{})
-	config.Config.DB = db
-	birthdayService := NewBirthdayService(daos.NewBirthdayDAO())
-	err = birthdayService.Excel_to_db("Birthdays.xlsx")
-	if err != nil {
-		log.Fatal(err)
-	}
+	localconf.Config.DB = db
+	birthdayService := NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
+	//err = birthdayService.Excel_to_db("Birthdays.xlsx")
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 	birthdays, err := birthdayService.GetAll()
 	if err != nil {
 		log.Fatal(err)

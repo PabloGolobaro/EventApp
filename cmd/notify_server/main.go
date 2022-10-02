@@ -3,10 +3,20 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/db"
+	"github.com/GoAdminGroup/go-admin/modules/db"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/admin_panel"
+
+	_ "github.com/GoAdminGroup/go-admin/adapter/gin"               // Import the adapter, it must be imported. If it is not imported, you need to define it yourself.
+	_ "github.com/GoAdminGroup/go-admin/modules/db/drivers/sqlite" // Import the sql driver
+	_ "github.com/GoAdminGroup/themes/adminlte"                    // Import the theme
+
+	"github.com/GoAdminGroup/go-admin/engine"
+	"github.com/GoAdminGroup/go-admin/modules/config"
+	"github.com/GoAdminGroup/go-admin/modules/language"
 	_ "github.com/PabloGolobaro/go-notify-project/cmd/notify_server/docs"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localdb"
 	"log"
 )
 
@@ -27,15 +37,39 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	if err := config.LoadConfig("./config"); err != nil {
+	if err := localconf.LoadConfig("./config"); err != nil {
 		panic(fmt.Errorf("invalid application configuration: %s", err))
 	}
 	db_type := flag.String("db", "postgres", "Type of DB to use.")
 	flag.Parse()
 	log.Println("Opening db...")
-	config.Config.DB = db.Init(*db_type)
+	localconf.Config.DB = localdb.Init(*db_type)
 	log.Println("Creating router...")
 	r := httputil.NewGinRouter()
+	eng := engine.Default()
+
+	// GoAdmin global configuration, can also be imported as a json file.
+	cfg := config.Config{
+		Databases: config.DatabaseList{
+			"default": {
+				MaxIdleCon: 50,
+				MaxOpenCon: 150,
+				File:       "./admin.db",
+				Driver:     db.DriverSqlite,
+			},
+		},
+		UrlPrefix: "admin", // The url prefix of the website.
+		// Store must be set and guaranteed to have write access, otherwise new administrator users cannot be added.
+		Store: config.Store{
+			Path:   "./uploads",
+			Prefix: "uploads",
+		},
+		Language: language.EN,
+	}
+
+	// Add configuration and plugins, use the Use method to mount to the web framework.
+	_ = eng.AddConfig(&cfg).AddGenerators(admin_panel.Generators).Use(r)
+
 	log.Println("Starting server...")
-	r.Run(fmt.Sprintf(":%v", config.Config.ServerPort))
+	r.Run(fmt.Sprintf(":%v", localconf.Config.ServerPort))
 }

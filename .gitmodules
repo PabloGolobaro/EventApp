@@ -1,0 +1,3 @@
+[submodule "notify_site/themes/hugo-coder"]
+	path = notify_site/themes/hugo-coder
+	url = https://github.com/luizdepra/hugo-coder.git

@@ -8,7 +8,8 @@ type User_DAO interface {
 	ReadAll() ([]models.User, error)
 	Update(id uint, user models.User) error
 	Delete(id uint) error
-	GetBirthdays(id uint) ([]models.Birthday, error)
+	GetBirthdays(user *models.User) ([]models.Birthday, error)
+	GetPaginatedBirthdays(user *models.User, pagination *models.Pagination) ([]models.Birthday, error)
 }
 type UserService struct {
 	user_dao User_DAO
@@ -40,8 +41,15 @@ func (s *UserService) Post(birth models.User) error {
 	}
 	return nil
 }
-func (s *UserService) GetAllUserBirthdays(id uint) ([]models.Birthday, error) {
-	birthdays, err := s.user_dao.GetBirthdays(id)
+func (s *UserService) GetAllUserBirthdays(user *models.User) ([]models.Birthday, error) {
+	birthdays, err := s.user_dao.GetBirthdays(user)
+	if err != nil {
+		return nil, err
+	}
+	return birthdays, nil
+}
+func (s *UserService) GetPaginatedBirthdays(user *models.User, pagination *models.Pagination) ([]models.Birthday, error) {
+	birthdays, err := s.user_dao.GetPaginatedBirthdays(user, pagination)
 	if err != nil {
 		return nil, err
 	}

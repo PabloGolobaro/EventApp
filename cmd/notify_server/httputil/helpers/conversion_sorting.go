@@ -7,9 +7,18 @@ import (
 )
 
 func Shorten_date(time time.Time) string {
-	return time.Format("02-01-2006")
+	return time.Format("02.01.2006")
 }
 
+func Expired_date(t time.Time) bool {
+
+	if t.Day() < time.Now().Day() && t.Month() <= time.Now().Month() {
+		return true
+	} else {
+		return false
+	}
+
+}
 func Sort_birthdays(birthdays []models.Birthday) []models.Birthday {
 	sort.Slice(birthdays, func(i, j int) bool {
 		month_i := birthdays[i].BirthDate.Month()

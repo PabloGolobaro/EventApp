@@ -3,8 +3,8 @@ package middlewares
 import (
 	"errors"
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil/helpers"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -16,7 +16,7 @@ func Auth() gin.HandlerFunc {
 			helpers.NewError(c, http.StatusUnauthorized, errors.New("Authorization is required Header"))
 			c.Abort()
 		}
-		if authHeader != config.Config.ApiKey {
+		if authHeader != localconf.Config.ApiKey {
 			helpers.NewError(c, http.StatusUnauthorized, fmt.Errorf("this user isn't authorized to this operation: api_key=%s", authHeader))
 			c.Abort()
 		}

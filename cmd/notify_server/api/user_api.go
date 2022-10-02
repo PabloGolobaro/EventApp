@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/services"
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ import (
 // @Router /users/{id} [get]
 // @Security ApiKeyAuth
 func GetUser(c *gin.Context) {
-	s := services.NewUserService(daos.NewUserDAO(config.Config.DB))
+	s := services.NewUserService(daos.NewUserDAO(localconf.Config.DB))
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
 	if user, err := s.GetById(uint(id)); err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
@@ -36,9 +36,13 @@ func GetUser(c *gin.Context) {
 // @Router /users/{id}/all [get]
 // @Security ApiKeyAuth
 func GetAllUserBirthdays(c *gin.Context) {
-	s := services.NewUserService(daos.NewUserDAO(config.Config.DB))
+	s := services.NewUserService(daos.NewUserDAO(localconf.Config.DB))
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
-	if birthdays, err := s.GetAllUserBirthdays(uint(id)); err != nil {
+	user, err := s.GetById(uint(id))
+	if err != nil {
+		return
+	}
+	if birthdays, err := s.GetAllUserBirthdays(&user); err != nil {
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 	} else {
 		c.JSON(http.StatusOK, birthdays)
@@ -53,7 +57,7 @@ func GetAllUserBirthdays(c *gin.Context) {
 // @Router /users [post]
 // @Security ApiKeyAuth
 func PostUser(c *gin.Context) {
-	s := services.NewUserService(daos.NewUserDAO(config.Config.DB))
+	s := services.NewUserService(daos.NewUserDAO(localconf.Config.DB))
 	var user models.User
 	if err := c.BindJSON(&user); err != nil {
 		return

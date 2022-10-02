@@ -9,6 +9,8 @@ import (
 	"log"
 )
 
+const sqlite_db_name string = "admin.db"
+
 func Init(db_type string) *gorm.DB {
 	//dbURL := "postgres://pg:pass@localhost:5432/crud"
 	if db_type == "postgres" {
@@ -22,7 +24,7 @@ func Init(db_type string) *gorm.DB {
 		}
 		return db
 	} else if db_type == "sqlite" {
-		db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+		db, err := gorm.Open(sqlite.Open(sqlite_db_name), &gorm.Config{})
 		if err != nil {
 			log.Fatalln(err)
 		}

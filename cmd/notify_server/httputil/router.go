@@ -21,9 +21,13 @@ func NewGinRouter() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	log.Println("Creating routes...")
 	r.SetFuncMap(template.FuncMap{
-		"short": helpers.Shorten_date,
+		"short":   helpers.Shorten_date,
+		"expired": helpers.Expired_date,
 	})
 	r.Static("/assets", "./static/assets")
+	r.Static("/css", "./static/assets/css")
+	r.Static("/js", "./static/assets/js")
+	r.Static("/fonts", "./static/assets/fonts")
 	r.LoadHTMLGlob("./static/templates/*.html")
 
 	r.Use(sessions.Sessions("session", cookie.NewStore(globals.Secret)))
@@ -38,10 +42,9 @@ func NewGinRouter() *gin.Engine {
 	return r
 }
 func PublicRoutes(g *gin.RouterGroup) {
-
+	g.GET("/", controllers.IndexGetHandler())
 	g.GET("/login", controllers.LoginGetHandler())
 	g.POST("/login", controllers.LoginPostHandler())
-	g.GET("/", controllers.IndexGetHandler())
 
 }
 
@@ -67,5 +70,10 @@ func PrivateRoutes(g *gin.RouterGroup) {
 		}
 	}
 	g.GET("/dashboard", controllers.DashboardGetHandler())
+	g.GET("/month", controllers.MonthGetHandler())
+	g.GET("/tomorrow", controllers.TomorrowGetHandler())
+	g.GET("/today", controllers.TodayGetHandler())
 	g.GET("/logout", controllers.LogoutGetHandler())
+	g.GET("/:id", controllers.UserGetHandler())
+	g.POST("/:id", controllers.UserPostHandler())
 }

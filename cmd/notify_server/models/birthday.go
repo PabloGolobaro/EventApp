@@ -14,8 +14,8 @@ type User struct {
 }
 type Birthday struct {
 	gorm.Model
-	FullName    string    `json:"full_name,omitempty"`
-	PhoneNumber string    `json:"phone_number,omitempty"`
-	BirthDate   time.Time `json:"birth_date"`
+	FullName    string    `json:"full_name,omitempty" form:"fullname"`
+	PhoneNumber string    `json:"phone_number,omitempty" form:"phonenumber"`
+	BirthDate   time.Time `json:"birth_date" form:"birthdate" time_format:"2006-01-02"`
 	UserID      uint
 }

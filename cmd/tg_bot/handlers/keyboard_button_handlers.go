@@ -95,10 +95,12 @@ var ParseExcelDocument = func(ctx tele.Context) error {
 			return err
 		}
 	}
-	err = os.Remove(excel_temp_file)
-	if err != nil {
-		log.Println(err)
-	}
+	defer func() {
+		err = os.Remove(excel_temp_file)
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 	answer := fmt.Sprintf("Файл сохранен в базу дынных.")
 	return ctx.EditOrSend(answer)
 }

@@ -2,9 +2,9 @@ package services
 
 import (
 	"fmt"
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil/helpers"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,9 +24,9 @@ func TestUserService(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	config.Config.DB = db
+	localconf.Config.DB = db
 	//birthdayservise := NewBirthdayService(daos.NewBirthdayDAO())
-	UserService := NewUserService(daos.NewUserDAO())
+	UserService := NewUserService(daos.NewUserDAO(localconf.Config.DB))
 	//err = UserService.Post(models.User{
 	//	Username:   "Golobar",
 	//	Password:   "pacan334",
@@ -58,7 +58,7 @@ func TestUserService(t *testing.T) {
 		//	fmt.Println(err)
 		//	return
 		//}
-		birthdays, err := UserService.GetAllUserBirthdays(user.ID)
+		birthdays, err := UserService.GetAllUserBirthdays(&user)
 		if err != nil {
 			return
 		}

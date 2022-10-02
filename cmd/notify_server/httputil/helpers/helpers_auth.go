@@ -1,14 +1,14 @@
 package helpers
 
 import (
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/daos"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"log"
 	"strings"
 )
 
 func CheckUserPass(username, password string) bool {
-	user, err := daos.NewUserDAO(config.Config.DB).ReadByUsername(username)
+	user, err := daos.NewUserDAO(localconf.Config.DB).ReadByUsername(username)
 	if err != nil {
 		return false
 	}

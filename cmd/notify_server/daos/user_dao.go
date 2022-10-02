@@ -30,7 +30,7 @@ func (u UserGorm) Read(id uint) (models.User, error) {
 }
 func (u UserGorm) ReadByUsername(username string) (models.User, error) {
 	var user_struct models.User
-	db := u.DB.Where("username = ?", username).First(&user_struct)
+	db := u.DB.Where("username = ?", username).Preload("Birthdays").First(&user_struct)
 	if db.Error != nil {
 		return user_struct, db.Error
 	}
@@ -64,18 +64,22 @@ func (u UserGorm) Delete(id uint) error {
 	//TODO implement me
 	panic("implement me")
 }
-func (u UserGorm) GetBirthdays(id uint) ([]models.Birthday, error) {
+func (u UserGorm) GetBirthdays(user *models.User) ([]models.Birthday, error) {
 	var birthdays []models.Birthday
-	user, err := u.Read(id)
-	if err != nil {
-		return nil, err
-	}
-	err = u.DB.Order("birth_date").Model(&user).Association("Birthdays").Find(&birthdays)
+	err := u.DB.Order("birth_date").Model(user).Association("Birthdays").Find(&birthdays)
 	if err != nil {
 		return nil, err
 	}
 	return birthdays, nil
-
+}
+func (u UserGorm) GetPaginatedBirthdays(user *models.User, pagination *models.Pagination) ([]models.Birthday, error) {
+	var birthdays []models.Birthday
+	offset := (pagination.Page - 1) * pagination.Limit
+	err := u.DB.Limit(pagination.Limit).Offset(offset).Order("birth_date").Model(user).Association("Birthdays").Find(&birthdays)
+	if err != nil {
+		return nil, err
+	}
+	return birthdays, nil
 }
 func NewUserDAO(db *gorm.DB) *UserGorm {
 	return &UserGorm{DB: db}

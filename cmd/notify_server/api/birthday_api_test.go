@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/test_data"
 
-	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/config"
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -27,7 +27,7 @@ type apiTestCase struct {
 func newRouter() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
-	config.Config.DB = test_data.ResetDB()
+	localconf.Config.DB = test_data.ResetDB()
 
 	return router
 }
