@@ -74,6 +74,8 @@ func PrivateRoutes(g *gin.RouterGroup) {
 	g.GET("/tomorrow", controllers.TomorrowGetHandler())
 	g.GET("/today", controllers.TodayGetHandler())
 	g.GET("/logout", controllers.LogoutGetHandler())
-	g.GET("/:id", controllers.UserGetHandler())
-	g.POST("/:id", controllers.UserPostHandler())
+	g.GET("/:id", controllers.EventGetHandler())
+	g.POST("/:id", controllers.EventPostHandler())
+	g.GET("/add", controllers.EventAddGetHandler())
+	g.POST("/add", controllers.EventAddPostHandler())
 }

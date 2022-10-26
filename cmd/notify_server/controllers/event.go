@@ -14,7 +14,7 @@ import (
 	"strconv"
 )
 
-func UserGetHandler() gin.HandlerFunc {
+func EventGetHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		user := session.Get(globals.Userkey)
@@ -33,7 +33,7 @@ func UserGetHandler() gin.HandlerFunc {
 
 	}
 }
-func UserPostHandler() gin.HandlerFunc {
+func EventPostHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		user := session.Get(globals.Userkey)
@@ -53,6 +53,45 @@ func UserPostHandler() gin.HandlerFunc {
 			c.HTML(http.StatusOK, "event.html", gin.H{
 				"user":    user,
 				"content": content_string})
+		}
+
+	}
+}
+func EventAddGetHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		user := session.Get(globals.Userkey)
+
+		c.HTML(http.StatusOK, "event.html", gin.H{
+			"user": user,
+		})
+
+	}
+}
+
+func EventAddPostHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		user := session.Get(globals.Userkey)
+		user_id := session.Get(globals.UserId)
+
+		var NewEvent models.Birthday
+
+		err := c.Bind(&NewEvent)
+		NewEvent.UserID = user_id.(uint)
+		if err != nil {
+			c.AbortWithStatus(http.StatusBadRequest)
+		}
+		s := services.NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
+		err = s.Post(NewEvent)
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+		} else {
+			content_string := fmt.Sprintf("Данные успешно добавлены!")
+			c.HTML(http.StatusOK, "event.html", gin.H{
+				"user":     user,
+				"birthday": NewEvent,
+				"content":  content_string})
 		}
 
 	}
