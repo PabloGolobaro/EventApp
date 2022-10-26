@@ -58,6 +58,11 @@ func main() {
 	b.Handle(&inline.BtnNext, handlers.NextButton)
 	b.Handle(&inline.BtnPrev, handlers.PrevButton)
 	b.Handle(&inline.BtnCancel, handlers.CancelButton)
+	b.Handle(&reply.BtnPay, handlers.PayButton)
+	b.Handle(tele.OnCheckout, handlers.PreCheckout)
+	b.Handle(tele.OnPayment, handlers.GetPayment)
+	b.Handle(&reply.BtnStartNotification, handlers.StartNotificationFunc)
+	b.Handle(&reply.BtnStopNotification, handlers.StopNotificationFunc)
 
 	//	markup := b.NewMarkup()
 	//	markup.Inline(

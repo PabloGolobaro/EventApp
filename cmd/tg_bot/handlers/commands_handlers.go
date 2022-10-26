@@ -6,6 +6,7 @@ import (
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"github.com/PabloGolobaro/go-notify-project/cmd/tg_bot/config"
 	"github.com/PabloGolobaro/go-notify-project/cmd/tg_bot/keyboard/reply"
+	"github.com/PabloGolobaro/go-notify-project/cmd/tg_bot/misc"
 	tele "gopkg.in/telebot.v3"
 	"gorm.io/gorm"
 	"strconv"
@@ -13,6 +14,7 @@ import (
 
 var StartCommand = func(ctx tele.Context) error {
 	var answer string
+	address := misc.FindIPAddress()
 	user := ctx.Sender()
 	userDAO := daos.NewUserDAO(config.Config.DB)
 	telegram_user, err := userDAO.ReadByTelegramId(strconv.Itoa(int(ctx.Sender().ID)))
@@ -27,11 +29,11 @@ var StartCommand = func(ctx tele.Context) error {
 		if err != nil {
 			return err
 		}
-		answer = fmt.Sprintf("Здравствуй %v. Похоже ты здесь впервые!\n Твои данные для входы на сайт:\n Username: %v password: %v", user.Username, user.Username, "Password")
+		answer = fmt.Sprintf("Здравствуй %v. Похоже ты здесь впервые!\n Твои данные для входы на сайт:\n Username: %v password: %v", user.Username, user.Username, "Password\nАдрес сайта - "+address+":8080")
 	} else if err != nil {
 		return err
 	} else {
-		answer = fmt.Sprintf("Здравствуй %v.\n Твои данные для входы на сайт:\n Username: %v password: %v", user.Username, user.Username, "Password")
+		answer = fmt.Sprintf("Здравствуй %v.\n Твои данные для входы на сайт:\n Username: %v password: %v", user.Username, user.Username, "Password\nАдрес сайта - "+address+":8080")
 	}
 
 	return ctx.Send(answer, reply.Menu)

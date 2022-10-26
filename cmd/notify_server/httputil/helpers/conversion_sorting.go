@@ -12,7 +12,9 @@ func Shorten_date(time time.Time) string {
 
 func Expired_date(t time.Time) bool {
 
-	if t.Day() < time.Now().Day() && t.Month() <= time.Now().Month() {
+	if t.Month() < time.Now().Month() {
+		return true
+	} else if t.Month() == time.Now().Month() && t.Day() <= time.Now().Day() {
 		return true
 	} else {
 		return false

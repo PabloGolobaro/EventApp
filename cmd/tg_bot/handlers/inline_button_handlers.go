@@ -24,7 +24,7 @@ var NextButton = func(ctx tele.Context) error {
 	}
 
 	var birthdays []models.Birthday
-	birthdays, err = findBirthdaysCache(birthdays, user.ID, userDAO)
+	birthdays, err = findBirthdaysCache(birthdays, user, userDAO)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ var PrevButton = func(ctx tele.Context) error {
 	}
 
 	var birthdays []models.Birthday
-	birthdays, err = findBirthdaysCache(birthdays, user.ID, userDAO)
+	birthdays, err = findBirthdaysCache(birthdays, user, userDAO)
 	if err != nil {
 		return err
 	}
@@ -82,17 +82,17 @@ var PrevButton = func(ctx tele.Context) error {
 	return ctx.Edit(answer, inline.Selector)
 }
 
-func findBirthdaysCache(birthdays []models.Birthday, id uint, userDAO *daos.UserGorm) ([]models.Birthday, error) {
+func findBirthdaysCache(birthdays []models.Birthday, user models.User, userDAO *daos.UserGorm) ([]models.Birthday, error) {
 	var err error
-	cache, ok := config.Config.Cache.M[id]
+	cache, ok := config.Config.Cache.M[user.ID]
 	if !ok {
-		config.Config.Cache.M[id] = make([]models.Birthday, 0)
-		birthdays, err = userDAO.GetBirthdays(id)
+		config.Config.Cache.M[user.ID] = make([]models.Birthday, 0)
+		birthdays, err = userDAO.GetBirthdays(&user)
 		if err != nil {
 			return birthdays, err
 		}
 		birthdays = helpers.Sort_birthdays(birthdays)
-		config.Config.Cache.M[id] = append(config.Config.Cache.M[id], birthdays...)
+		config.Config.Cache.M[user.ID] = append(config.Config.Cache.M[user.ID], birthdays...)
 	} else {
 		birthdays = cache
 	}

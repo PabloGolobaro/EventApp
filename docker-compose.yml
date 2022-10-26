@@ -22,6 +22,7 @@ services:
       NOTIFY_SERVER_PORT: 8080
       NOTIFY_API_KEY: golobar
     stop_signal: SIGINT
+    image: pablogolobar/notify_server:1.0.2
     build:
       context: .
       target: production
@@ -34,7 +35,7 @@ services:
     depends_on:
       - db
   bot:
-    container_name: tg_bot
+    image: pablogolobar/notify_bot:1.0.3
     build:
       context: .
       target: production
@@ -45,8 +46,6 @@ services:
       - tg_bot
     depends_on:
       - db
-
-
 networks:
   tg_bot:
     driver: bridge

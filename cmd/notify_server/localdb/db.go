@@ -16,7 +16,7 @@ func Init(db_type string) *gorm.DB {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		err = db.AutoMigrate(&models.Birthday{}, &models.User{})
+		err = db.AutoMigrate(&models.User{}, &models.Birthday{})
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -28,7 +28,7 @@ func Init(db_type string) *gorm.DB {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		err = db.AutoMigrate(&models.Birthday{}, &models.User{})
+		err = db.AutoMigrate(&models.User{}, &models.Birthday{})
 		if err != nil {
 			log.Fatalln(err)
 		}

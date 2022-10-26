@@ -33,7 +33,7 @@ var ShowAllButton = func(ctx tele.Context) error {
 		return err
 	}
 	var birthdays []models.Birthday
-	birthdays, err = findBirthdaysCache(birthdays, user.ID, userDAO)
+	birthdays, err = findBirthdaysCache(birthdays, user, userDAO)
 	if err != nil {
 		return err
 	}
@@ -42,6 +42,9 @@ var ShowAllButton = func(ctx tele.Context) error {
 		config.Config.PageMap.Map[ctx.Sender().ID] = 0
 	}
 	answer := fmt.Sprintf("Ваши напоминания:\n")
+	if len(birthdays) == 0 {
+		return ctx.EditOrSend("Событий нет!")
+	}
 	for i, birthday := range birthdays {
 		if i >= 0+page*10 && i < (page+1)*10 {
 			answer += fmt.Sprintf("%d. %v: %s %s\n", i+1, birthday.FullName, birthday.BirthDate.Format("02.01.2006"), birthday.PhoneNumber)
@@ -112,11 +115,14 @@ var ShowTodayButton = func(ctx tele.Context) error {
 		return err
 	}
 	var birthdays []models.Birthday
-	birthdays, err = findBirthdaysCache(birthdays, user.ID, userDAO)
+	birthdays, err = findBirthdaysCache(birthdays, user, userDAO)
 	if err != nil {
 		return err
 	}
 	birthdays = core.CheckTodayBirthdays(birthdays)
+	if len(birthdays) == 0 {
+		return ctx.EditOrSend("Событий нет!")
+	}
 	answer := fmt.Sprintf("Ваши напоминания:\n")
 	for i, birthday := range birthdays {
 		answer += fmt.Sprintf("%d. %v: %s %s\n", i+1, birthday.FullName, birthday.BirthDate.Format("02.01.2006"), birthday.PhoneNumber)
@@ -130,11 +136,14 @@ var ShowTommorowButton = func(ctx tele.Context) error {
 		return err
 	}
 	var birthdays []models.Birthday
-	birthdays, err = findBirthdaysCache(birthdays, user.ID, userDAO)
+	birthdays, err = findBirthdaysCache(birthdays, user, userDAO)
 	if err != nil {
 		return err
 	}
 	birthdays = core.CheckTomorrowBirthdays(birthdays)
+	if len(birthdays) == 0 {
+		return ctx.EditOrSend("Событий нет!")
+	}
 	answer := fmt.Sprintf("Ваши напоминания:\n")
 	for i, birthday := range birthdays {
 		answer += fmt.Sprintf("%d. %v: %s %s\n", i+1, birthday.FullName, birthday.BirthDate.Format("02.01.2006"), birthday.PhoneNumber)
@@ -148,11 +157,14 @@ var ShowMonthButton = func(ctx tele.Context) error {
 		return err
 	}
 	var birthdays []models.Birthday
-	birthdays, err = findBirthdaysCache(birthdays, user.ID, userDAO)
+	birthdays, err = findBirthdaysCache(birthdays, user, userDAO)
 	if err != nil {
 		return err
 	}
 	birthdays = core.CheckMonthBirthdays(birthdays)
+	if len(birthdays) == 0 {
+		return ctx.EditOrSend("Событий нет!")
+	}
 	answer := fmt.Sprintf("Ваши напоминания:\n")
 	for i, birthday := range birthdays {
 		answer += fmt.Sprintf("%d. %v: %s %s\n", i+1, birthday.FullName, birthday.BirthDate.Format("02.01.2006"), birthday.PhoneNumber)

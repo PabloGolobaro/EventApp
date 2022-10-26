@@ -16,3 +16,5 @@ bin
 
 go.sum
 /postgres/
+*.db
+/config/bot_config.yaml

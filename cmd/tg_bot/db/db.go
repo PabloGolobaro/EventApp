@@ -9,7 +9,7 @@ import (
 	"log"
 )
 
-const sqlite_db_name string = "admin.db"
+const sqlite_db_name string = "test.db"
 
 func Init(db_type string) *gorm.DB {
 	//dbURL := "postgres://pg:pass@localhost:5432/crud"
