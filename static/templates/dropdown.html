@@ -1,0 +1,24 @@
+<div class="dropdown is-hoverable">
+    <div class="dropdown-trigger">
+        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+            <span>Действия</span>
+            <span class="icon is-small">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+        </button>
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+        <div class="dropdown-content">
+            <a href="/{{.ID}}" class="dropdown-item">
+                Изменить
+            </a>
+
+            <a  hx-delete="/{{.ID}}" class=" dropdown-item has-text-danger" hx-target="#event-{{ .ID}}"
+               hx-swap="outerHTML swap:1s"  x-data
+                @click="$dispatch('notice', {type: 'success', text: '🔥 Успешно удалено!'})">
+                Удалить
+            </a>
+        </div>
+    </div>
+</div>
+

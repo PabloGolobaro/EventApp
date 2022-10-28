@@ -51,8 +51,9 @@ func EventPostHandler() gin.HandlerFunc {
 		} else {
 			content_string := fmt.Sprintf("Данные успешно обновлены!")
 			c.HTML(http.StatusOK, "event.html", gin.H{
-				"user":    user,
-				"content": content_string})
+				"birthday": updatedBirthday,
+				"user":     user,
+				"content":  content_string})
 		}
 
 	}
@@ -92,6 +93,26 @@ func EventAddPostHandler() gin.HandlerFunc {
 				"user":     user,
 				"birthday": NewEvent,
 				"content":  content_string})
+		}
+
+	}
+}
+func EventDeleteHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		user := session.Get(globals.Userkey)
+		id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+		s := services.NewBirthdayService(daos.NewBirthdayDAO(localconf.Config.DB))
+		err := s.Delete(uint(id))
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+			log.Println(err)
+		} else {
+
+			c.HTML(http.StatusOK, "empty.html", gin.H{
+				"notification": "Успешно удалено",
+				"user":         user,
+			})
 		}
 
 	}

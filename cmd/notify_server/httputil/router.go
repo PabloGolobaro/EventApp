@@ -21,8 +21,9 @@ func NewGinRouter() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	log.Println("Creating routes...")
 	r.SetFuncMap(template.FuncMap{
-		"short":   helpers.Shorten_date,
-		"expired": helpers.Expired_date,
+		"short":      helpers.Shorten_date,
+		"expired":    helpers.Expired_date,
+		"datestring": helpers.DateToString,
 	})
 	r.Static("/assets", "./static/assets")
 	r.Static("/css", "./static/assets/css")
@@ -76,6 +77,7 @@ func PrivateRoutes(g *gin.RouterGroup) {
 	g.GET("/logout", controllers.LogoutGetHandler())
 	g.GET("/:id", controllers.EventGetHandler())
 	g.POST("/:id", controllers.EventPostHandler())
+	g.DELETE("/:id", controllers.EventDeleteHandler())
 	g.GET("/add", controllers.EventAddGetHandler())
 	g.POST("/add", controllers.EventAddPostHandler())
 }

@@ -1,0 +1,59 @@
+{{template "header.html" .}}
+<section class="section">
+    <div class="container">
+        <a class="button is-primary" href="/dashboard">
+            Обратно
+        </a></div>
+    <br>
+    <div class="container">
+        <h1 class="title">
+            {{if .birthday}}
+                Данные по дню рождения <b class="is-primary">{{ .birthday.FullName}}</b>
+            {{else}}
+                Добавить день рождения:
+            {{end}}
+        </h1>
+        <div class="container ">
+            {{if .birthday}}
+            <form action="/{{ .birthday.ID}}" method="POST">
+                {{else}}
+                <form action="/add" method="POST">
+                    {{end}}
+                    <div class="field">
+                        <label class="label">Имя</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Введите имя" value="{{ .birthday.FullName}}"
+                                   name="fullname">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Дата рождения</label>
+                        <div class="control">
+                            {{$b:= .birthday.BirthDate | datestring}}
+                            <input class="input" type="date" value="{{ $b}}"
+                                   name="birthdate">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Номер телефона</label>
+                        <div class="control">
+                            {{if .birthday.PhoneNumber}}
+                                <input class="input" type="text" placeholder="Введите номер телефона"
+                                       value="{{ .birthday.PhoneNumber}}" name="phonenumber">
+                            {{else}}
+                                <input class="input" type="text" placeholder="Введите номер телефона"
+                                       name="phonenumber">
+                            {{end}}
+                        </div>
+                    </div>
+                    <div class="control">
+                        <button type="submit" class="button is-link" x-data
+                                @click="$dispatch('notice', {type: 'success', text: '🔥 Успешно!'})">Сохранить
+                        </button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</section>
+{{template "notification.html" .}}
+{{template "footer.html"}}

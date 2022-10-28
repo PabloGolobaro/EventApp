@@ -1,0 +1,16 @@
+{{define "pagination.html"}}
+    <nav class="pagination is-centered is-medium is-rounded" role="navigation"
+         aria-label="pagination">
+        {{if .pagination.Previous }}
+            <a class="pagination-previous" href="{{ .path}}/?page={{ .pagination.Previous }}">Предыдущие</a>
+        {{end}}
+        <ul class="pagination-list">
+            <li><a class="pagination-link is-current" aria-label="Page {{ .pagination.Page}}"
+                   aria-current="page">{{ .pagination.Page}}</a></li>
+        </ul>
+        {{if .pagination.Next }}
+            <a class="pagination-next"
+               href="{{ .path}}/?page={{ .pagination.Next }}">Следующие</a>
+        {{end}}
+    </nav>
+{{end}}

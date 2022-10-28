@@ -24,7 +24,7 @@ var StartNotificationFunc = func(ctx tele.Context) error {
 		return nil
 	}
 	go func(bot *tele.Bot, ID int64) {
-		ticker := time.NewTicker(20 * time.Second)
+		ticker := time.NewTicker(12 * time.Hour)
 		defer ticker.Stop()
 		done := make(chan bool)
 		tasks[ID] = &done

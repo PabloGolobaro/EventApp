@@ -1,0 +1,26 @@
+{{template "header.html" .}}
+<section class="hero is-primary">
+    <br>
+    <div class="container is-medium">
+        <h1 class="title">
+            <a href="https://t.me/event_notifyer_Golo_Skull_bot">Бот напоминатель</a>
+        </h1>
+    </div>
+    <br>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-4">
+                <div class="box"> {{template "menu.html" .}}</div>
+                <div class="box"><a class="button is-primary" href="/add">Добавить событие</a></div>
+            </div>
+            <div class="column is-8" id="events_list"><p class="notification is-primary">Ваши события:</p>
+
+                {{template "birthdays_list.html" .}}
+            </div>
+        </div>
+    </div>
+</section>
+{{template "notification.html" .}}
+{{template "footer.html"}}

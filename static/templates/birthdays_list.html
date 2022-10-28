@@ -1,0 +1,68 @@
+{{define "birthdays_list.html"}}
+
+    {{if .birthdays}}
+        <div class="box" id="birthdays_box">
+            <style>
+                .fade-me-out.htmx-swapping {
+                    opacity: 0;
+                    transition: opacity 1s ease-out;
+                }
+            </style>
+            {{range .birthdays}}
+                <div class="container fade-me-out" id="event-{{ .ID}}">
+                    <div class="columns " >
+                        <div class="column is-2 ">
+                            {{$b:= .BirthDate | expired}}
+                            {{if eq $b true}}
+                                <div class="block ">
+                                    <div class="icon-text">
+                                        <span class="icon is-large has-text-warning">
+                                            <i class="fas fas fa-2x fa-exclamation-triangle"></i>
+                                        </span>
+                                        <span>Уже произошло</span>
+                                    </div>
+                                </div>
+                            {{else}}
+                                <div class="icon-text">
+                                    <span class="icon is-large has-text-success">
+                                        <i class="fas fas fa-2x fa-check-square"></i>
+                                    </span>
+                                    <span>Еще не произошло</span>
+                                </div>
+                            {{end}}
+                        </div>
+                        <div class="column is-2">
+                            <figure class="image is-128x128">
+                                <img class="is-rounded" src="/assets/record.jpg">
+                            </figure>
+                        </div>
+                        <div class="column is-5"><h3 class="title"><a
+                                        href="/{{.ID}}">{{ .FullName}}</a></h3>
+                            <h4 class="subtitle">{{ .BirthDate | short}}
+                                <p>{{if .PhoneNumber}} {{ .PhoneNumber}} {{else}} Номер не указан{{end}}</p>
+                            </h4>
+
+
+                        </div>
+                        <div class="column is-1">{{template "dropdown.html" .}}</div>
+                    </div>
+                </div>
+            {{end}}
+        </div>
+
+        <div class="box">
+            {{template "pagination.html" .}}
+        </div>
+
+    {{else}}
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <h3 class="title">
+                        <a href="/">Дней рождений нет</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    {{end}}
+{{end}}

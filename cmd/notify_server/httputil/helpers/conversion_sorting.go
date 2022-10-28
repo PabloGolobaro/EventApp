@@ -36,3 +36,6 @@ func Sort_birthdays(birthdays []models.Birthday) []models.Birthday {
 	})
 	return birthdays
 }
+func DateToString(timeToChange time.Time) string {
+	return timeToChange.Format("2006-01-02")
+}

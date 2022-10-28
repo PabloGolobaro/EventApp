@@ -1,0 +1,26 @@
+{{define "menu.html"}}
+    <aside class="menu">
+        <p class="menu-label is-primary">
+            {{.user}} дни рождения
+        </p>
+        <ul class="menu-list ">
+            <li><a href="/dashboard">Все</a></li>
+            <li><a href="/month">В этом месяце</a></li>
+            <li><a href="/tomorrow">На завтра</a></li>
+            <li><a href="/today">На сегодня</a></li>
+        </ul>
+        <p class="menu-label is-primary">
+            {{.user}} события
+        </p>
+        <ul class="menu-list">
+            <li><a>Все события</a></li>
+        </ul>
+        <p class="menu-label is-primary">
+            О сайте
+        </p>
+        <ul class="menu-list">
+            <li><a href="https://pablogolobar.netlify.app/about/">О создателе</a></li>
+            <li><a href="https://pablogolobar.netlify.app/">Контакты</a></li>
+        </ul>
+    </aside>
+{{end}}
