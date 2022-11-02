@@ -29,9 +29,14 @@
                     <div class="field">
                         <label class="label">Дата рождения</label>
                         <div class="control">
+                             {{if .birthday}}
                             {{$b:= .birthday.BirthDate | datestring}}
                             <input class="input" type="date" value="{{ $b}}"
                                    name="birthdate">
+                                           {{else}}
+                                 <input class="input" type="date" name="birthdate">
+                             {{end}}
+
                         </div>
                     </div>
                     <div class="field">

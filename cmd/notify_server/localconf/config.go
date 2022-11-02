@@ -17,6 +17,8 @@ type appConfig struct {
 	DBErr error
 	// the server port. Defaults to 8080
 	ServerPort int `mapstructure:"server_port"`
+	//site domain
+	Domain string `mapstructure:"domain"`
 	// the data source name (DSN) for connecting to the database. required.
 	DSN string `mapstructure:"dsn"`
 	// the API key needed to authorize to API. required.
@@ -41,6 +43,8 @@ func LoadConfig(configPaths ...string) error {
 	port := v.Get("server_port").(string)
 	Config.ServerPort, _ = strconv.Atoi(port)
 	log.Println("Got SERVER_PORT...")
+	Config.Domain = v.Get("domain").(string)
+	log.Println("Got DOMAIN...")
 	log.Println("Loaded config...")
 	return v.Unmarshal(&Config)
 }

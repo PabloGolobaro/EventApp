@@ -18,8 +18,7 @@ func SendToAdmins(bot *tele.Bot) error {
 			log.Println(fmt.Errorf("Ошибка отправки оповещения админам: %v", err))
 			continue
 		}
-		address := FindIPAddress()
-		_, err = bot.Send(tele.ChatID(id), "Бот запущен по адресу "+address+":8080")
+		_, err = bot.Send(tele.ChatID(id), "Бот запущен по адресу https://"+config.Config.Domain)
 		if err != nil {
 			return fmt.Errorf("Ошибка отправки оповещения админам: %v", err)
 		}

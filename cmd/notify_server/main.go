@@ -3,9 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	_ "github.com/GoAdminGroup/go-admin/adapter/gin"               // Import the adapter, it must be imported. If it is not imported, you need to define it yourself.
-	_ "github.com/GoAdminGroup/go-admin/modules/db/drivers/sqlite" // Import the sql driver
-	_ "github.com/GoAdminGroup/themes/adminlte"                    // Import the theme
+	//_ "github.com/GoAdminGroup/go-admin/adapter/gin"               // Import the adapter, it must be imported. If it is not imported, you need to define it yourself.
+	//_ "github.com/GoAdminGroup/go-admin/modules/db/drivers/sqlite" // Import the sql driver
+	//_ "github.com/GoAdminGroup/themes/adminlte"                    // Import the theme
+	"github.com/gin-gonic/autotls"
 
 	_ "github.com/PabloGolobaro/go-notify-project/cmd/notify_server/docs"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil"
@@ -41,7 +42,7 @@ func main() {
 	log.Println("Creating router...")
 	r := httputil.NewGinRouter()
 	log.Println("Starting server...")
-	r.Run(fmt.Sprintf(":%v", localconf.Config.ServerPort))
+	log.Fatal(autotls.Run(r, localconf.Config.Domain))
 }
 
 //eng := engine.Default()

@@ -20,6 +20,8 @@ type botConfig struct {
 	Admins []string `mapstructure:"admins"`
 	// bot token
 	Token string `mapstructure:"token"`
+	//site domain
+	Domain string `mapstructure:"domain"`
 	// the shared DB ORM object
 	DB *gorm.DB
 	// the error thrown be GORM when using DB ORM object

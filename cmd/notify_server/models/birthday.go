@@ -7,10 +7,10 @@ import (
 
 type User struct {
 	gorm.Model
-	Username   string     `gorm:"column:username;unique" json:"name,omitempty"`
-	Password   string     `gorm:"column:password"`
-	TelegramId string     `gorm:"column:telegram_id"`
-	Birthdays  []Birthday `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Username     string     `gorm:"column:username;unique" json:"name,omitempty"`
+	PasswordHash string     `gorm:"column:passwordhash"`
+	TelegramId   string     `gorm:"column:telegram_id"`
+	Birthdays    []Birthday `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 type Birthday struct {
 	gorm.Model

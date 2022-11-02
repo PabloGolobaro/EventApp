@@ -47,7 +47,10 @@ var StartNotificationFunc = func(ctx tele.Context) error {
 			}
 		}
 	}(ctx.Bot(), ctx.Sender().ID)
-	return nil
+	now := time.Now().Add(time.Duration(3 * time.Hour))
+	second := time.Now().Add(time.Duration(15 * time.Hour))
+	answer := fmt.Sprintf("Оповещение включено! Оповещение будет производиться в %v и в %v часов.", now.Hour(), second.Hour())
+	return ctx.Send(answer)
 }
 
 var StopNotificationFunc = func(ctx tele.Context) error {

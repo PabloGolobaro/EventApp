@@ -5,7 +5,7 @@ RUN go mod download
 COPY . .
 RUN go get github.com/codegangsta/gin
 RUN go install github.com/codegangsta/gin
-EXPOSE 8080
+EXPOSE 8000
 
 CMD gin -i --appPort 8080 --port 3000 --bin notify_server --path ./cmd/notify_server run ./cmd/notify_server/main.go
 
@@ -23,6 +23,6 @@ COPY --from=build /src/notify_server .
 
 COPY --from=build /src/static ./static
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["/notify_server"]
