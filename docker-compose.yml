@@ -23,13 +23,14 @@ services:
       NOTIFY_API_KEY: "golobar"
       NOTIFY_DOMAIN: "pablogolobar.ru"
     stop_signal: SIGINT
-    image: pablogolobar/notify_server:1.0.7
+    image: pablogolobar/notify_server:1.0.8
     build:
       context: .
       target: production
       dockerfile: ./docker/server/Dockerfile
     restart: always
     ports:
+      - 80:80
       - 443:443
     networks:
       - tg_bot

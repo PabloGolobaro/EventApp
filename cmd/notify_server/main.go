@@ -42,11 +42,11 @@ func main() {
 	log.Println("Creating router...")
 	r := httputil.NewGinRouter()
 	log.Println("Starting server...")
+	go httputil.RedirectToHTTPS(localconf.Config.Domain, "443")
 	log.Fatal(autotls.Run(r, localconf.Config.Domain))
 }
 
 //eng := engine.Default()
-
 // GoAdmin global configuration, can also be imported as a json file.
 //cfg := config.Config{
 //	Databases: config.DatabaseList{
@@ -63,8 +63,20 @@ func main() {
 //		Path:   "./uploads",
 //		Prefix: "uploads",
 //	},
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //	Language: language.EN,
 //}
-
 // Add configuration and plugins, use the Use method to mount to the web framework.
 //_ = eng.AddConfig(&cfg).AddGenerators(admin_panel.Generators).Use(r)
