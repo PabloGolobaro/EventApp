@@ -1,0 +1,34 @@
+//eng := engine.Default()
+// GoAdmin global configuration, can also be imported as a json file.
+//cfg := config.Config{
+//	Databases: config.DatabaseList{
+//		"default": {
+//			MaxIdleCon: 50,
+//			MaxOpenCon: 150,
+//			File:       "./admin.db",
+//			Driver:     db.DriverSqlite,
+//		},
+//	},
+//	UrlPrefix: "admin", // The url prefix of the website.
+//	// Store must be set and guaranteed to have write access, otherwise new administrator users cannot be added.
+//	Store: config.Store{
+//		Path:   "./uploads",
+//		Prefix: "uploads",
+//	},
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//	Language: language.EN,
+//}
+// Add configuration and plugins, use the Use method to mount to the web framework.
+//_ = eng.AddConfig(&cfg).AddGenerators(admin_panel.Generators).Use(r)

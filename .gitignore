@@ -18,3 +18,5 @@ go.sum
 /postgres/
 *.db
 /config/bot_config.yaml
+/cert/
+*.env

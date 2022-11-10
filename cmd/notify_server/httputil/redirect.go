@@ -1,6 +1,8 @@
 package httputil
 
 import (
+	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/controllers"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net"
 	"net/http"
@@ -18,4 +20,9 @@ func RedirectToHTTPS(domain, tlsPort string) {
 		}),
 	}
 	log.Println(httpSrv.ListenAndServe())
+}
+func SMTPServer(domain string) {
+	smtpServer := gin.Default()
+	smtpServer.GET("/verifyemail/:verificationCode", controllers.VerifyEmail())
+	log.Println(smtpServer.Run(domain + ":3000"))
 }

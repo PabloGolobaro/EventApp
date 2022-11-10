@@ -1,0 +1,28 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notify Web</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="icon" href="/assets/logo.png">
+    <script src="https://kit.fontawesome.com/b59abfc6af.js" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body>
+<section class="section">
+    <div class="columns">
+        <div class="column"></div>
+        <div class="column is-one-third">
+            <div class="container" style="border: 1px solid lightgray; border-radius: 3px;padding: 15px;">
+                <p>Hi {{ .Username}},</p>
+                <p>Please verify your account to be able to login</p>
+                <a href="{{.URL}}" target="_blank">Verify your account</a>
+            </div>
+        </div>
+        <div class="column"></div>
+    </div>
+</section>
+</body>
+</html>

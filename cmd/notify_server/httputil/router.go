@@ -25,6 +25,11 @@ func NewGinRouter() *gin.Engine {
 		"expired":    helpers.Expired_date,
 		"datestring": helpers.DateToString,
 	})
+	//corsConfig := cors.DefaultConfig()
+	//corsConfig.AllowOrigins = []string{"https://localhost:443", "http://localhost:3000"}
+	//corsConfig.AllowCredentials = true
+	//r.Use(cors.New(corsConfig))
+
 	r.Static("/assets", "./static/assets")
 	r.Static("/css", "./static/assets/css")
 	r.Static("/js", "./static/assets/js")
@@ -46,6 +51,9 @@ func PublicRoutes(g *gin.RouterGroup) {
 	g.GET("/", controllers.IndexGetHandler())
 	g.GET("/login", controllers.LoginGetHandler())
 	g.POST("/login", controllers.LoginPostHandler())
+	g.GET("/signup", controllers.GetSignUp())
+	g.POST("/signup", controllers.SignUpUser())
+	g.GET("/verifyemail/:verificationCode", controllers.VerifyEmail())
 
 }
 
@@ -80,4 +88,5 @@ func PrivateRoutes(g *gin.RouterGroup) {
 	g.DELETE("/:id", controllers.EventDeleteHandler())
 	g.GET("/add", controllers.EventAddGetHandler())
 	g.POST("/add", controllers.EventAddPostHandler())
+	g.GET("/attach", controllers.AttachBot())
 }

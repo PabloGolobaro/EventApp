@@ -16,12 +16,16 @@ import (
 
 func main() {
 	db_type := flag.String("db", "postgres", "Type of DB to use.")
+	env_type := flag.String("env", "server", "Type of environment.")
 	flag.Parse()
 
 	err := config.LoadConfig()
 	if err != nil {
 		log.Fatal(err)
 		return
+	}
+	if *env_type == "local" {
+		config.Config.Domain = "127.0.0.1"
 	}
 	pref := tele.Settings{
 		Token:  config.Config.Token,

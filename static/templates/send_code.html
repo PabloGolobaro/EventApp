@@ -1,0 +1,16 @@
+{{template "header.html" .}}
+<section class="section">
+    <div class="columns">
+        <div class="column"></div>
+        <div class="column is-one-third">
+
+            {{if .content}}
+                <div class="notification is-success">
+                    {{.content}}
+                </div>
+            {{end}}
+        </div>
+        <div class="column"></div>
+    </div>
+</section>
+{{template "footer.html" }}

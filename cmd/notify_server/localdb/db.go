@@ -1,6 +1,7 @@
 package localdb
 
 import (
+	"fmt"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/models"
 	"gorm.io/driver/postgres"
@@ -9,10 +10,20 @@ import (
 	"log"
 )
 
+const sqlite_name string = "test.db"
+
 func Init(db_type string) *gorm.DB {
 	//dbURL := "postgres://pg:pass@localhost:5432/crud"
 	if db_type == "postgres" {
-		db, err := gorm.Open(postgres.Open(localconf.Config.DSN), &gorm.Config{})
+		dsn := fmt.Sprintf(
+			"host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=Asia/Shanghai",
+			localconf.Config.DBHost,
+			localconf.Config.DBUserName,
+			localconf.Config.DBUserPassword,
+			localconf.Config.DBName,
+			localconf.Config.DBPort,
+		)
+		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -24,7 +35,7 @@ func Init(db_type string) *gorm.DB {
 		//db.Where("1=1").Delete(&models.User{})
 		return db
 	} else if db_type == "sqlite" {
-		db, err := gorm.Open(sqlite.Open(localconf.Config.DSN), &gorm.Config{})
+		db, err := gorm.Open(sqlite.Open(sqlite_name), &gorm.Config{})
 		if err != nil {
 			log.Fatalln(err)
 		}

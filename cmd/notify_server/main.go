@@ -3,15 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	//_ "github.com/GoAdminGroup/go-admin/adapter/gin"               // Import the adapter, it must be imported. If it is not imported, you need to define it yourself.
-	//_ "github.com/GoAdminGroup/go-admin/modules/db/drivers/sqlite" // Import the sql driver
-	//_ "github.com/GoAdminGroup/themes/adminlte"                    // Import the theme
-	"github.com/gin-gonic/autotls"
-
+	api "github.com/PabloGolobaro/go-notify-project/cmd/notify_server/api/smtp_api"
 	_ "github.com/PabloGolobaro/go-notify-project/cmd/notify_server/docs"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/httputil"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localconf"
 	"github.com/PabloGolobaro/go-notify-project/cmd/notify_server/localdb"
+	"github.com/gin-gonic/autotls"
 	"log"
 )
 
@@ -32,51 +29,30 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	if err := localconf.LoadConfig("./config"); err != nil {
+	if err := localconf.LoadConfig("."); err != nil {
 		panic(fmt.Errorf("invalid application configuration: %s", err))
 	}
 	db_type := flag.String("db", "postgres", "Type of DB to use.")
+	env_type := flag.String("env", "server", "Type of environment.")
 	flag.Parse()
 	log.Println("Opening db...")
 	localconf.Config.DB = localdb.Init(*db_type)
+	if *env_type == "local" {
+		localconf.Config.Domain = "localhost"
+		localconf.Config.DBHost = "127.0.0.1"
+	}
+	newConfiguration := api.NewConfiguration()
+	apiClient := api.NewAPIClient(newConfiguration)
+	localconf.Config.API = apiClient
 	log.Println("Creating router...")
 	r := httputil.NewGinRouter()
 	log.Println("Starting server...")
 	go httputil.RedirectToHTTPS(localconf.Config.Domain, "443")
-	log.Fatal(autotls.Run(r, localconf.Config.Domain))
-}
 
-//eng := engine.Default()
-// GoAdmin global configuration, can also be imported as a json file.
-//cfg := config.Config{
-//	Databases: config.DatabaseList{
-//		"default": {
-//			MaxIdleCon: 50,
-//			MaxOpenCon: 150,
-//			File:       "./admin.db",
-//			Driver:     db.DriverSqlite,
-//		},
-//	},
-//	UrlPrefix: "admin", // The url prefix of the website.
-//	// Store must be set and guaranteed to have write access, otherwise new administrator users cannot be added.
-//	Store: config.Store{
-//		Path:   "./uploads",
-//		Prefix: "uploads",
-//	},
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//	Language: language.EN,
-//}
-// Add configuration and plugins, use the Use method to mount to the web framework.
-//_ = eng.AddConfig(&cfg).AddGenerators(admin_panel.Generators).Use(r)
+	if *env_type == "local" {
+		log.Fatal(r.RunTLS(":443", "./cert/cert.pem", "./cert/key.pem"))
+	} else {
+		log.Fatal(autotls.Run(r, localconf.Config.Domain))
+	}
+
+}
