@@ -23,6 +23,8 @@ COPY --from=build /src/notify_server .
 
 COPY --from=build /src/static ./static
 
+COPY --from=build /src/app.env .
+
 EXPOSE 80
 
 CMD ["/notify_server"]

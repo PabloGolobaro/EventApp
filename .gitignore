@@ -20,3 +20,4 @@ go.sum
 /config/bot_config.yaml
 /cert/
 *.env
+/docker/server-docker/docker-compose.yml
