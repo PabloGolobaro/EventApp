@@ -1,5 +1,6 @@
 
-# Golang Notify Project
+# EventApp Project
+*This app enables users to control notificating on theirs events.*
 
 ## Full Web Application. Features:
 - Web UI and REAT API
